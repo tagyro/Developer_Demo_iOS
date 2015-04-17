@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>blukii Kit Programming Guide</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style type="text/css" media="screen">
+        @font-face {
+            font-family: 'Dosis';
+            font-style: normal;
+            font-weight: 200;
+            src: local('Dosis ExtraLight'), local('Dosis-ExtraLight'), url(http://themes.googleusercontent.com/static/fonts/dosis/v2/zuuDDmIlQfJeEM3Uf6kkpnYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
+        }
+        
+        @font-face {
+            font-family: 'Dosis';
+            font-style: normal;
+            font-weight: 600;
+            src: local('Dosis SemiBold'), local('Dosis-SemiBold'), url(http://themes.googleusercontent.com/static/fonts/dosis/v2/f8qltGyj2S-SS_tsOHsjgXYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
+        }
+        
+        body {
+            background: rgba(14, 27, 51, 0.8);
+        }
+        
+        a {
+            font: 15px/1.2 'Dosis SemiBold', sans-serif;
+            font-weight: lighter;
+        }
+        
+        a:link {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        
+        a:visited {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #FC5F1A;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: #FC5F1A;
+            text-decoration: underline;
+        }
+        
+        h1 {
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            font: 10px/1.2 'Dosis ExtraLight', sans-serif;
+            margin-bottom: 30px;
+        }
+        
+        details {
+            font: 15px/1.2 'Dosis SemiBold', sans-serif;
+            color: #FFFFFF;
+        }
+        
+        div.toc_top_level_item {
+            margin-bottom: 15px;
+        }
+        
+        
+        div.toc_item {
+            margin-top: 5px;
+            margin-left: 15px;
+        }
+        
+        a.node {
+            font-weight: bold;
+        }
+        </style>
+	</head>
+    <body>
+        <h1 align="center">Table of contents</h1>
+        <div class="toc_top_level_item">
+            <a href="Chapters/Introduction.html" target="ContentFrame">Introduction</a>
+        </div>
+        <div class="toc_top_level_item">
+            <details>
+                <summary>
+                    <a class="node" href="Chapters/IdentifiengAndManagingBlukiiDevices.html" target="ContentFrame">Identifieng and Managing blukii Devices</a>
+                </summary>
+                <div class="toc_item">
+                    <details>
+                        <summary>
+                            <a class="node" href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Finding_Blukii_Devices_Around_You" target="ContentFrame">Finding blukii Devices Around You</a>
+                        </summary>
+                        <div class="toc_item">
+                            <a href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Identifiying_blukii_Devices" target="ContentFrame">Identifiying blukii Devices</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Instantiating_blukii_Descriptions" target="ContentFrame">Instantiating blukii Descriptions</a>
+                        </div>
+                    </details>
+                </div>
+                <div class="toc_item">
+                    <details>
+                        <summary>
+                            <a class="node" href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Getting_Device_Information" target="ContentFrame">Getting Device Information</a>
+                        </summary>
+                        <div class="toc_item">
+                            <a href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Firmware_Revision" target="ContentFrame">Firmware Revision</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Hardware_Revision" target="ContentFrame">Hardware Revision</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/IdentifiengAndManagingBlukiiDevices.html#Manufacter_Name" target="ContentFrame">Manufacter Name</a>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+        <div class="toc_top_level_item">
+            <details>
+                <summary>
+                    <a class="node" href="Chapters/LoadingProfilesAndHandlingADeviceContext.html" target="ContentFrame">Loading Profiles and Handling a Device Context</a>
+                </summary>
+                <div class="toc_item">
+                    <a href="Chapters/LoadingProfilesAndHandlingADeviceContext.html#Loading_Profiles" target="ContentFrame">Loading Profiles</a>
+                </div>
+                <div class="toc_item">
+                    <details>
+                        <summary>
+                            <a class="node" href="Chapters/LoadingProfilesAndHandlingADeviceContext.html#Handling_Multiple_blukii_Devices" target="ContentFrame">Handling Multiple blukii Devices</a>
+                        </summary>
+                        <div class="toc_item">
+                            <a href="Chapters/LoadingProfilesAndHandlingADeviceContext.html#Profile_Handlers" target="ContentFrame">Profile Handlers</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/LoadingProfilesAndHandlingADeviceContext.html#Understanding_Device_Contexts" target="ContentFrame">Understanding Device Contexts</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/LoadingProfilesAndHandlingADeviceContext.html#Maintaining_blukii_Device_Contexts" target="ContentFrame">Maintaining blukii Device Contexts</a>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+        <div class="toc_top_level_item">
+            <details>
+                <summary>
+                    <a class="node" href="Chapters/InteractingWithProfiles.html" target="ContentFrame">Interacting with Profiles</a>
+                </summary>
+                <div class="toc_item">
+                    <a href="Chapters/InteractingWithProfiles.html#Terminology"  target="ContentFrame">Terminology</a>
+                </div>
+                <div class="toc_item">
+                    <details>
+                        <summary>
+                            <a class="node" href="Chapters/InteractingWithProfiles.html#Using_Profile_Handlers" target="ContentFrame">Using Profile Handlers</a>
+                        </summary>
+                        <div class="toc_item">
+                            <a href="Chapters/InteractingWithProfiles.html#Reading_Characteristics" target="ContentFrame">Reading Characteristics</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/InteractingWithProfiles.html#Changing_Characteristic_Values" target="ContentFrame">Changing Characteristic Values</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/InteractingWithProfiles.html#Subscribing_to_a_Characteristc" target="ContentFrame">Subscribing to a Characteristc</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/InteractingWithProfiles.html#Unsubscribing_from_a_Characteristc" target="ContentFrame">Unsubscribing from a Characteristc</a>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+        <div class="toc_top_level_item">
+            <details>
+                <summary>
+                    <a class="node" href="Chapters/LowLevelUsage.html" target="ContentFrame">Low-Level Usage</a>
+                </summary>
+                <div class="toc_item">
+                    <a href="Chapters/LowLevelUsage.html#Understanding_the_Callback_Forwarding" target="ContentFrame">Understanding the Callback Forwarding</a>
+                </div>
+                <div class="toc_item">
+                    <details>
+                        <summary>
+                            <a class="node" href="Chapters/LowLevelUsage.html#Customizing_the_Forwarding" target="ContentFrame">Customizing the Forwarding</a>
+                        </summary>
+                        <div class="toc_item">
+                            <a href="Chapters/LowLevelUsage.html#Beeing_the_Delegate" target="ContentFrame">Beeing the Delegate</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/LowLevelUsage.html#Loading_Profiles" target="ContentFrame">Loading Profiles</a>
+                        </div>
+                        <div class="toc_item">
+                            <a href="Chapters/LowLevelUsage.html#Handling_or_Forwarding_Callbacks" target="ContentFrame">Handling or Forwarding Callbacks</a>
+                        </div>
+                    </details>
+                </div>
+                <div class="toc_item">
+                    <a href="Chapters/LowLevelUsage.html#Long_Term_Applications" target="ContentFrame">Long-Term Applications</a>
+                </div>
+            </details>
+        </div>
+        <div class="toc_top_level_item">
+            <a href="Chapters/RevisionHistory.html" target="ContentFrame">Revision History</a>
+        </div>
+    </body>
+</html>

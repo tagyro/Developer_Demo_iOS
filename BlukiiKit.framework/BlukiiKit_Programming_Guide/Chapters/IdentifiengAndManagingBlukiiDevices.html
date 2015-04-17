@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>blukii Kit Programming Guide - Identifieng and Managing blukii Devices</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../CSS/ContentPage.css" type="text/css" />
+    </head>
+    <body>
+        <h1 class="first_header">Identifieng and Managing blukii Devices</h1>
+        <div class="text">
+            Since blukii devices are working as a peripheral, your application always needs to be a Bluetooth central to interact with them.
+            A central can scan its environment for Bluetooth devices in the peripheral role and connect or disconnect them.
+            That is what this chapter is all about.<br /><br />
+            You will learn how you set up your device as a central, how to find peripherals and how to detect whether these are blukiis or not.
+            Last, but not least, you will learn how to get the device specific information.
+        </div>
+        
+        <h2 id="Finding_Blukii_Devices_Around_You">Finding blukii Devices Around You</h2>
+        <div class="text">
+            The first step to get all blukii devices around you is to make your device a central and using it to scan for peripherals.
+            You achieve this by using a <code>CBCentralManager</code> from the Core Bluetooth framework.
+            Setting yourself as the delegate of you central manager and calling <code>scanForPeripheralsWithServices(_:options:)</code> on it will get you each peripheral as a <code>CBPeripheral</code> object in the <code>centralManager(_:didDiscoverPeripheral:advertisementData:RSSI:)</code> callback of the central managers delegate.
+            <br /><br />
+            Although you should and might already be familiar with that process, <a class="listing_ref" href="#listing_2.1">Listing 2.1</a> shows how to implement it in Swift.
+            <div class="listing" id="listing_2.1">
+                <details open>
+                    <summary>
+                        <b>Listing 2.1</b>&nbsp;&nbsp;&nbsp;Getting peripherals using CBCentralManager
+                    </summary>
+                    <pre>
+import Foundation
+import CoreBluetooth
+
+
+class MyClass: NSObject, CBCentralManagerDelegate {
+
+    
+    lazy var centralManager: CBCentralManager = CBCentralManager(delegate: self, queue: nil)
+    
+    
+    func findPeripherals() {
+        if self.centralManager.state == CBCentralManagerState.PoweredOn {
+            self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
+        }
+    }
+    
+    
+    // MARK: - CBCentralManagerDelegate
+    
+    
+    func centralManagerDidUpdateState(central: CBCentralManager!) {
+        if centralManager.state == CBCentralManagerState.PoweredOn {
+            centralManager.scanForPeripheralsWithServices(nil, options: nil)
+        }
+    }
+    
+    
+    func centralManager(central: CBCentralManager!, didDiscoverPeripheral peripheral: CBPeripheral!, advertisementData: [NSObject : AnyObject]!, RSSI: NSNumber!) {
+        // Peripheral found
+    }
+}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Identifiying_blukii_Devices">Identifiying blukii Devices</h3>
+        <div class="text">
+            Once your central manager has discovered a peripheral you need to check whether it represents a blukii device or any other third party Bluetooth device.
+            blukii Kit provides the <code>BKBlukiiDescription</code> class, which is able to answer that question using the advertising data of a given <code>CBPeripheral</code>.
+            <a class="listing_ref" href="#listing_2.2">Listing 2.2</a> shows an example.
+            <div class="listing" id="listing_2.2">
+                <details open>
+                    <summary>
+                        <b>Listing 2.2</b>&nbsp;&nbsp;&nbsp;Checking whether a peripheral is a blukii device
+                    </summary>
+                    <pre>
+var peripheral: CBPeripheral
+                    
+// [...]
+
+if BKBlukiiDescription.isBlukiiDevice(peripheral) {
+    // It is a blukii device
+} else {
+    // It is any other unknown Bluetooth device
+}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Instantiating_blukii_Descriptions">Instantiating blukii Descriptions</h3>
+        <div>
+            When you are sure that a peripheral represents a blukii device, you can instantiate a <code>BKBlukiiDescription</code>, which blukii Kit will need to work with that blukii device.
+            <code>BKBlukiiDescription</code> provides an initializer <code>init(peripheral:)</code> to create a blukii description from a given peripheral.
+            <div class="note">
+                <aside>
+                    <b>Attention:</b> Due to an initializer in Swift cannot return nil, an exception will be raised if you pass in a peripheral that does not represent a blukii device.
+                    Therefore, you should always perform a check, like the one seen in <a class="listing_ref" href="#listing_2.2">Listing 2.2</a>, before you instantiate a <code>BKBlukiiDescription</code> from a peripheral.
+                </aside>
+            </div>
+        </div>
+        
+        <h2 id="Getting_Device_Information">Getting Device Information</h2>
+        <div class="text">
+            After you have found a blukii device and instantiated a <code>BKBlukiiDescription</code> from it, you can access the revision of the hardware and the firmware and the name of the manufacter by calling <code>determineDeviceInformation(_:)</code> on your blukii description, as shown in <a class="listing_ref" href="#listing_2.3">Listing 2.3</a>.<br />
+           	The device information will be given back to you in the passed in completion closure, after it has been read out asynchronously.
+            <div class="listing" id="listing_2.3">
+                <details open>
+                    <summary>
+                        <b>Listing 2.3</b>&nbsp;&nbsp;&nbsp;Getting device information from a blukii
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDescription
+
+// [...]
+                        
+blukii.determineDeviceInformation { (error: NSError?) -> () in
+    if error == nil {
+        // Device information available from now
+        let firmwareRevision = blukii.firmwareRevision
+        let hardwareRevision = blukii.hardwareRevision
+        let manufacturerName = blukii.manufacterName
+    } else {
+        // Error while reading device information
+    }
+}</pre>
+                </details>
+            </div>
+            <div class="note">
+                <aside>
+                    <b>Attention:</b> The values for the device information are provided as optional calculated variables in the <code>BKBlukiiDescription</code>, which will return the value of the appropriate characteristic if it is available. So if you instantiate a blukii description from a peripheral for what these values are alreay known these values may be returned even if you did not determine the device information before.<br /><br />
+                    To ensure that all values are available you should always call <code>determineDeviceInformation(_:)</code> before accessing them. This will not read out known values. So if all values are already available for the underlying peripheral, the completion closure will be invoked immediately.
+                </aside>
+            </div>
+        </div>
+        
+        <h3 id="Firmware_Revision">Firmware Revision</h3>
+        <div class="text">
+            The firmware revision can be accessed in two different ways.
+            The first one is just a simple String with the pattern "4.7.1.1" and can be accessed via the <code>firmwareRevisionString</code> variable.
+            The second way is to use <code>firmwareRevision</code>, which returns an instance of <code>BKFirmwareRevision</code>.<br /><br />
+            <code>BKFirmwareRevision</code> implements a rich representation of a revision number. In opposition to a representation as a String <code>BKFirmwareRevision</code> holds the components, seperated by a dot, as an array with the most significant at the index zero.
+            The revision string "4.7.1.1" for example would result in [4, 7, 1, 1] as an array of integers.
+            The following operators are also overloaded to compare <code>BKFirmwareRevision</code> objects: <code>==, !=, &lt;, > &lt;=, >=</code>.<br /><br />
+            In general the firmware revision is structured as follows:<br />
+            &nbsp;&nbsp;&nbsp;<code>&lt;release revision>.&lt;blukii revision>.&lt;feature revision>.&lt;bug revision></code>
+            <figure id="table_2.1">
+                <figcaption>
+                    <b>Table 2.1</b>&nbsp;&nbsp;&nbsp;Meaning of firmware revision parts
+                </figcaption>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><b>release revision</b></td>
+                            <td>Major version of the firmware.</td>
+                        </tr>
+                        <tr>
+                            <td><b>blukii revision</b></td>
+                            <td>blukii generation (hardware)</td>
+                        </tr>
+                        <tr>
+                            <td><b>feature revision</b></td>
+                            <td>Changes when new features have been added to the firmware</td>
+                        </tr>
+                        <tr>
+                            <td><b>bug revision</b></td>
+                            <td>Changes after bugfixes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+            <figure id="table_2.">
+                <figcaption>
+                    <b>Table 2.2</b>&nbsp;&nbsp;&nbsp;Release revision
+                </figcaption>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>1</b></td>
+                            <td>SmartSensor Firmware for blukii 1.0</td>
+                        </tr>
+                        <tr>
+                            <td><b>2</b></td>
+                            <td>SmartSensor Firmware for blukii revisionen 4 to 7</td>
+                        </tr>
+                        <tr>
+                            <td><b>3</b></td>
+                            <td>SmartBeacon Firmware blukii</td>
+                        </tr>
+                        <tr>
+                            <td><b>4</b></td>
+                            <td>SmartBeacon Firmware USB-Dongle</td>
+                        </tr>
+                        <tr>
+                            <td><b>5</b></td>
+                            <td>BaseMode</td>
+                        </tr>
+                        <tr>
+                            <td><b>6</b></td>
+                            <td>SmartKey</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+            <figure id="table_2.3">
+                <figcaption>
+                    <b>Table 2.3</b>&nbsp;&nbsp;&nbsp;blukii revison
+                </figcaption>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>1</b></td>
+                            <td>blukii SmartSensor 1000-001 LIS3DH</td>
+                        </tr>
+                        <tr>
+                            <td><b>2</b></td>
+                            <td>blukii SmartSensor 1000-001 ADXL362</td>
+                        </tr>
+                        <tr>
+                            <td><b>3</b></td>
+                            <td>blukii SmartBeacon 1000-001 without sensors</td>
+                        </tr>
+                        <tr>
+                            <td><b>4</b></td>
+                            <td>blukii SmartPen 1001-004</td>
+                        </tr>
+                        <tr>
+                            <td><b>5</b></td>
+                            <td>blukii SmartSensor 1010-001</td>
+                        </tr>
+                        <tr>
+                            <td><b>6</b></td>
+                            <td>blukii SmartSensor S 1010-002</td>
+                        </tr>
+                        <tr>
+                            <td><b>7</b></td>
+                            <td>blukii SmartSensor L 1011-002</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </div>
+        
+        <h3 id="Hardware_Revision">Hardware Revision</h3>
+        <div class="text">
+            The hardware revision is returned as a simple String, structured as follows:<br />
+            &nbsp;&nbsp;&nbsp;<code>&lt;blukii geometry>-&lt;revision>-&lt;sensors></code>
+            <figure id="table_2.4">
+                <figcaption>
+                    <b>Table 2.4</b>&nbsp;&nbsp;&nbsp;blukii geometry
+                </figcaption>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>1000</b></td>
+                            <td>blukii one (deprecated)</td>
+                        </tr>
+                        <tr>
+                            <td><b>1001</b></td>
+                            <td>blukii Pen</td>
+                        </tr>
+                        <tr>
+                            <td><b>1010</b></td>
+                            <td>blukii Small</td>
+                        </tr>
+                        <tr>
+                            <td><b>1011</b></td>
+                            <td>blukii Large</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+            <figure id="table_2.5">
+                <figcaption>
+                    <b>Table 2.5</b>&nbsp;&nbsp;&nbsp;Sensors
+                </figcaption>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Value</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>0x01</td>
+                            <td>Accelerometer</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x02</b></td>
+                            <td>Magnetometer</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x04</b></td>
+                            <td>Humidity</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x08</b></td>
+                            <td>Light</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x10</b></td>
+                            <td>Temperature</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x20</b></td>
+                            <td>AirPressure</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x40</b></td>
+                            <td>Sensor 7</td>
+                        </tr>
+                        <tr>
+                            <td><b>0x80</b></td>
+                            <td>Sensor 8</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </div>
+        
+        
+        <h3 id="Manufacter_Name">Manufacter Name</h3>
+        <div class="text">
+            The manufacter name is returned as a simple String.
+        </div>
+    </body>
+</html>

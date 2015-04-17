@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>blukii Kit Programming Guide - Low-Level Usage</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../CSS/ContentPage.css" type="text/css" />
+    </head>
+    <body>
+        <h1 class="first_header">Low-Level Usage</h1>
+        <div class="text">
+            We already mentioned in <a href="../Chapters/Introduction.html#Building_Long-Term_Applications_and_Accessing_Low-Level_Functions_Beside_Blukii_Kit" target="ContentFrame">Building Long-Term Applications and Accessing Low-Level Functions Beside blukii Kit</a> that there are applications that need to use features, provided by Core Bluetooth, which have nothing to do with the specific functionality of a blukii device, beside blukii specific functions.
+            You also got an overview on how the standard pattern works in <a href="../Chapters/Introduction.html#Using_Blukii_Kit_in_a_Standard_Application">Using blukii Kit in a Standard Application</a>.<br /><br />
+            In this chapter you will learn more details of this pattern and how you need to adjust it to access low-level Bluetooth functionality biside blukii Kit.
+        </div>
+        
+        <h2 id="Understanding_the_Callback_Forwarding">Understanding the Callback Forwarding</h2>
+        <div class="text">
+            After loading a <i>blukii profile</i> for a <code>BKBlukiiDescription</code> the delegate of the underlying <code>CBPeripheral</code> will be set to the <code>BKBlukiiDeviceContext</code> the created <code>BKProfileHandler</code> has been added to.
+            That means that from now this device context will receive all Core Bluetooth callbacks related to the represented periperhal.
+            The <code>BKBlukiiDeviceContext</code> implements the following three mehods from the <code>CBPeripheralDelegate</code> protocol:
+            <ul>
+                <li>
+                    <code>peripheral(_:didUpdateValueForCharacteristic:error:)</code>
+                </li>
+                <li>
+                    <code>peripheral(_:didWriteValueForCharacteristic:error:)</code>
+                </li>
+                <li>
+                    <code>peripheral(_:didUpdateNotificationStateForCharacteristic:error:)</code>
+                </li>
+            </ul>
+            That means that only these three callback may be handled.
+            There is no guarantee that a call of one of these three methods will be handled.
+            Whether it will be handled or not depends on if the <code>BKBLukiiDeviceContext</code> contains a <code>BKProfileHandler</code>, that can handle one of these three calls for a certain characteristic.
+            The <code>BKBLukiiDeviceContext</code> determines this by iterating over all containing <code>BKProfileHandlers</code> and calling the appropriate method from these three:
+            <ul>
+                <li>
+                    <code>canHandleDidUpdateValueForCharacteristic(_:)</code>
+                </li>
+                <li>
+                    <code>canHandleDidWriteValueForCharacteristic(_:)</code>
+                </li>
+                <li>
+                    <code>canHandleDidUpdateSubscriptionForCharacteristic(_:)</code>
+                </li>
+            </ul>
+            All of these methods return a <code>Bool</code> value that indicates whether the <code>BKProfileHandler</code> can handle the appropriate callback for the provided characteristic.
+            The callback will be forwarded to the first <code>BKProfileHandler</code>, that returns <code>true</code>, by calling the appropriate method from these three:
+            <ul>
+                <li>
+                    <code>handleDidUpdateValueForCharacteristic(_:error:)</code>
+                </li>
+                <li>
+                    <code>handleDidWriteValueForCharacteristic(_:error:)</code>
+                </li>
+                <li>
+                    <code>handleDidUpdateSubscriptionForCharacteristic(_:error:)</code>
+                </li>
+            </ul>
+            If there is no <code>BKProfileHandler</code> found, that can handle the callback, this callback will be ignored.
+            <a class="figure_ref" href="#figure_5.1">Figure 5.1</a> show the standard callback forwarding.
+            <figure id="figure_5.1">
+                <figcaption>
+                    <b>Figure 5.1</b>&nbsp;&nbsp;&nbsp;Standard forwarding for a <i>GATT read</i> callback
+                </figcaption>
+                <object data="../Media/GATTForwarding.svg" type="image/svg+xml" width="850px"></object>
+            </figure>
+        </div>
+        
+        <h2 id="Customizing_the_Forwarding">Customizing the Forwarding</h2>
+        <div class="text">
+            When you want to customize the forwaring pattern in order to access low-level Bluetooth features biside blukii Kit there are three steps to consider:
+            <ol>
+                <li>Enabling your controller to be a peripheral delegate</li>
+                <li>Adjusting the loading of <i>blukii profile</i></li>
+                <li>Handling callbacks or forwarding them to blukii Kit</li>
+            </ol>
+            In the following sections, these steps will be explained in detail.
+        </div>
+        
+        <h3 id="Beeing_the_Delegate">Beeing the Delegate</h3>
+        <div class="text">
+            At first the class you want to handle the callbacks need to be able to get these as a peripheral delegate.
+            For that you need to make it compliant to the <code>CBPeripheralDelegate</code> protocol.
+            So that you can at least forward all relevant callbacks to the blukii Kit it is highly recommended that you implement <code>peripheral(_:didUpdateValueForCharacteristic:error:)</code>, <code>peripheral(_:didWriteValueForCharacteristic:error:)</code> and <code>peripheral(_:didUpdateNotificationStateForCharacteristic:error:)</code>.
+            Everything else is optional and depends on whether you need it in you application or not.
+            <a class="listing_ref" href="#listing_5.1">Listing 5.1</a> shows how you prepare a class to handle update of the <i>Receivec Signal Strength Indicator (RSSI)</i> beside blukii Kit as an example.
+            <div class="listing" id="listing_5.1">
+                <details open>
+                    <summary>
+                        <b>Listing 5.1</b>&nbsp;&nbsp;&nbsp;Enabling a class to be a peripheral delegate
+                    </summary>
+                    <pre>
+class MyClass: NSObject, CBPeripheralDelegate {
+                        
+                        
+    // MARK: | CBPeripheralDelegate
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didUpdateValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle read
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didWriteValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle write
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle subscription change
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didReadRSSI RSSI: NSNumber!, error: NSError!) {
+        // Handle update of RSSI
+    }
+}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Loading_Profiles">Loading Profiles</h3>
+        <div class="text">
+            As mentioned in <a href="Chapters/LowLevelUsage.html#Understanding_the_Callback_Forwarding" target="ContentFrame">Understanding the Callback Forwarding</a> loading a <i>blukii profile</i> for a <code>BKBlukiiDescription</code> will end setting the delegate of the underlying <code>CBPeripheral</code> to the <code>BKBlukiiDeviceContext</code>, the created <code>BKProfileHandler</code> has been added to.
+            So the next thing you need to adjust is that you need to set the delegate of the peripheral back to your controller class after the loading of the profile ended.
+            <a class="listing_ref" href="#listing_5.2">Listing 5.2</a> extends our example to meet that requirement.
+            <div class="listing" id="listing_5.2">
+                <details open>
+                    <summary>
+                        <b>Listing 5.2</b>&nbsp;&nbsp;&nbsp;Setting the peripheral delegate back to the Controller class after loading the profile
+                    </summary>
+                    <pre>
+class MyClass: NSObject, CBPeripheralDelegate {
+
+
+    var blukii: BKBlukiiDeviceContext
+
+
+    func loadProfileForPeripheral(peripheral: CBPeripheral) {
+        if let blukiiPeripheral = BKTemperatureProfileLoader.evaluatePeripheral(peripheral) {
+            BKTemperatureProfileLoader().loadProfileForBlukii(blukiiPeripheral, completeWith: { (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
+                if error == nil {
+                    self.blukii = blukiiDeviceContext!
+                    self.blukii.blukiiDescription.peripheral.delegate = self
+                }
+            })
+        }
+    }
+
+
+    // MARK: | CBPeripheralDelegate
+    
+    
+    func peripheral(peripheral: CBPeripheral!, didUpdateValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle read
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didWriteValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle write
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Handle subscription change
+    }
+                        
+                        
+    func peripheral(peripheral: CBPeripheral!, didReadRSSI RSSI: NSNumber!, error: NSError!) {
+        // Handle update of RSSI
+    }
+}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Handling_or_Forwarding_Callbacks">Handling or Forwarding Callbacks</h3>
+        <div class="text">
+            The last step is to implement the custom handling of the callbacks.
+            In our example we are only interested in the updates of the <i>RSSI</i> so we just forward the other callbacks to blukii Kit, as seen in <a class="listing_ref" href="#listing_5.3">Listing 5.3</a>.
+            Of course could also implement some custom handling here, but keep in mind that blukii Kit needs <b>all callbacks in the correct order</b> to work properly.
+            So if you cannot handle a callback you need to forward it!
+            <div class="listing" id="listing_5.2">
+                <details open>
+                    <summary>
+                        <b>Listing 5.2</b>&nbsp;&nbsp;&nbsp;Setting the peripheral delegate back to the Controller class after loading the profile
+                    </summary>
+                    <pre>
+class MyClass: NSObject, CBPeripheralDelegate {
+    
+    
+    var blukii: BKBlukiiDeviceContext
+    
+    
+    func loadProfileForPeripheral(peripheral: CBPeripheral) {
+        if let blukiiPeripheral = BKTemperatureProfileLoader.evaluatePeripheral(peripheral) {
+            BKTemperatureProfileLoader().loadProfileForBlukii(blukiiPeripheral, completeWith: { (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
+                if error == nil {
+                    self.blukii = blukiiDeviceContext!
+                    self.blukii.blukiiDescription.peripheral.delegate = self
+                }
+            })
+        }
+    }
+    
+    
+    // MARK: | CBPeripheralDelegate
+    
+    
+    func peripheral(peripheral: CBPeripheral!, didUpdateValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Forward read
+        self.blukii.handleDidUpdateValueForCharacteristic(characteristic, fromPeripheral: peripheral, error: error)
+    }
+    
+    
+    func peripheral(peripheral: CBPeripheral!, didWriteValueForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Forward write
+        self.blukii.handleDidWriteValueForCharacteristic(characteristic, fromPeripheral: peripheral, error: error)
+    }
+    
+    
+    func peripheral(peripheral: CBPeripheral!, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic!, error: NSError!) {
+        // Forward subscription change
+        self.blukii.handleDidUpdateSubscriptionForCharacteristic(characteristic, fromPeripheral: peripheral, error: error)
+    }
+    
+    
+    func peripheral(peripheral: CBPeripheral!, didReadRSSI RSSI: NSNumber!, error: NSError!) {
+        if error == nil {
+            let rssi = RSSI!.integerValue
+        }
+    }
+}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h2 id="Long_Term_Applications">Long-Term Applications</h2>
+        <div class="text">
+            A typical scenario where you need to access Core Bluetooth beside blukii Kit, is a long-term application that should also handle Bluetooth events when it is in the background mode or got suspended by the operating system.
+            In iOS 7 Apple adapted the <i>State Preservation and Restoration</i>, known from UIKit, to Core Bluetooth.
+            With that new feature you can now delegate your Bluetooth role (central or peripheral) to iOS, when your application gets suspended.
+            From then your application will be launched into the background mode when a relevant event occurs.
+            This event will then be forwared to your app where you can try to handle it or forward it to blukii Kit.<br /><br />
+            When you want to use blukii Kit in a long-term application you need to consider the following steps:
+            <ol>
+                <li>
+                    Instantiate your <code>CBCentralManager</code> with a restore idenifier
+                </li>
+                <li>
+                    When a Bluetooth evenet launches your application back to the background mode after it has been suspeneded, the method <code>centralManager(_:willRestoreState:)</code> will be called on the delegate of your preserved <code>CBCentralManager</code>.
+                    The dictionary will contain all peripherals.
+                    Instantiate new <code>BKBlukiiDescription</code> objects for all peripherals, representing blukii devices.
+                </li>
+                <li>
+                    If you want to interact with a <i>blukii profile</i> on one of your restored peripherals you need to load it again.
+                    Do not worry, if the peripheral was already connected before Core Bluetooth still knows its services and characteristics, so the loading of the <i>blukii profile</i> will not take as long as usual.
+                </li>
+                <li>
+                    Do not forget to set the delegate of the peripherals to your controller, if you need it.
+                    If the State Preservation and Restoration is the only Core Bluetooth feature you want to use biside blukii Kit you can skip that last step.
+                </li>
+            </ol>
+            <div class="note">
+                <aside>
+                    <b>Note:</b> If you are not familiar with the Core Bluetooth State Preservation and Restoration we highly recommend to take a look at Apple's <a href="http://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts" target="_blank">Core Bluetooth Programmin Guide</a>.
+                </aside>
+            </div>
+        </div>
+    </body>
+</html>

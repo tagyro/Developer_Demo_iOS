@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>blukii Kit Programming Guide - Loading Profiles and Handling a Device Context</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../CSS/ContentPage.css" type="text/css" />
+    </head>
+    <body>
+        <h1>Loading Profiles and Handling a Device Context</h1>
+        <div class="text">
+            As mentioned before in the <a href="../Chapters/Introduction.html">Introduction</a>, blukiis are providing access to their sensors using the <i>Generic Attribute Profile (GATT)</i>.
+            <i>GATT</i> uses a simple hierarchy to structure data.
+            Single values are represented by a <i>Characteristic</i>, which can be grouped by <i>Services</i>.
+            A blukii profile is just another term for such a service and a set of operations you can perform on its characteristics.<br /><br />
+            In this chapter you will learn how you can load such a profile and how you can manage them for one and for multiple blukii devices.
+        </div>
+        
+        <h2 id="Loading_Profiles">Loading Profiles</h2>
+        <div class="text">
+            Using Core Bluetooth, you would need to discover a service and its characteristic to access them.
+            This task goes along with a lot of error management to avoid inconsistencies but at the same time you want your application to be still responsive and you want to load the profile efficiently.<br /><br />
+			Combining these goals is a really challenging task.
+			Therefore blukii Kit provides a generalized mechanism, which is highly optimized in terms of performance and safety.
+            There is a protocol called <code>BKProfileLoader</code>. This protocol is implemented by several concrete classes. One for each existing blukii profile.
+            Each of these profile loaders basically consists of two methods. The first one, <code>evaluatePeripheral(_:)</code>, is a shortcut for the process seen in <a href="../Chapters/IdentifiengAndManagingBlukiiDevices.html#Identifiying_blukii_Devices" target="ContentFrame">Identifiying blukii Devices</a> and <a href="../Chapters/IdentifiengAndManagingBlukiiDevices.html#Instantiating_blukii_Descriptions" target="ContentFrame">Instantiating blukii Descriptions</a>.
+            It returns an optional <code>BKBlukiiDescription</code>, depending on whether the given peripheral is a blukii device or not.
+            The other method is <code>loadProfileForBlukii(_:completeWith:)</code>, which will load the desired profile for the given <b>connected</b> blukii device.
+            Whenever you want to load a profile for a blukii device you can create an instance of the appropriate loader for the profile and let it do all the work for you, as shown in <a class="listing_ref" href="#listing_3.1">Listing 3.1</a>.
+            <div class="listing" id="listing_3.1">
+                <details open>
+                    <summary>
+                        <b>Listing 2.3</b>&nbsp;&nbsp;&nbsp;Loading Battery Service profile
+                    </summary>
+                    <pre>
+var peripheral: CBPeripheral
+
+// [...]
+                        
+if let blukii = BKBatteryServiceProfileLoader.evaluatePeripheral(peripheral) {
+    BKBatteryServiceProfileLoader().loadProfileForBlukii(blukii, completeWith: { (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
+        if error == nil {
+            // Profile loaded successfully
+        } else {
+            // Error while loading profile
+        }
+    })
+}
+</pre>
+                </details>
+            </div>
+            If you need to load multiple profiles for a single blukii device please consider that it is not possible to load them parallel. This is because only one <code>BKProfileLoader</code> can become the delegate of the the associated peripheral. If you however try to load multiple profiles parallel only the first call will be executed and the other will be ignored. Use the <ode>completeWith</code> closure to load all needed profiles sequentially.
+        </div>
+        <div class="note">
+            <aside>
+                <b>Attention:</b> If the given BKBlukiiDescription belongs to a peripheral, which also belongs to a different <code>BKBlukiiDescription</code>, used in an existing <code>BKBlukiiDeviceContext</code>, this instance of <code>BKBlukiiDeviceContext</code> will raise an <code>BKMultipleDeviceContextsForPeripheralException</code>.<br /><br />
+                Learn more in <a href="../Chapters/LoadingProfilesAndHandlingADeviceContext.html#Handling_Multiple_blukii_Devices" target="ContentFrame">Handling Multiple blukii Devices</a>.
+            </aside>
+        </div>
+        
+        <h2 id="Handling_Multiple_blukii_Devices">Handling Multiple blukii Devices</h2>
+        <div class="text">
+            As you can see from <a class="listing_ref" href="#listing_3.1">Listing 3.1</a> the <code>loadProfileForBlukii(_:completeWith:)</code> method will pass a tuple of <code>(BKBlukiiDeviceContext?, NSError?)</code> into the completion closure you provided.
+            While the <code>NSError</code> is only passed in as an indicator for you, whether loading the profile succeeded or not, the <code>BKBlukiiDeviceContext</code> will become the most important object for your application.
+        </div>
+        
+        <h3 id="Profile_Handlers">Profile Handlers</h3>
+        <div class="text">
+            One important protocol we did not talk about yet is <code>BKProfileHandler</code>.
+			It is the counterpart to the <code>BKProfileLoader</code> protocol. For each blukii profile there is a concrete class implementing it.
+            These classes provide methods for you to access a profile in very efficient way.
+            They will be covered more detailed in <a href="../Chapters/InteractingWithProfiles.html" target="ContentFrame">Interacting with Profiles</a>.
+        </div>
+        
+        <h3 id="Understanding_Device_Contexts">Understanding Device Contexts</h3>
+        <div class="text">
+            The BKBlukiiDeviceContext class represents the current context of one blukii device.
+            Whenever a <code>BKProfileLoader</code> succeeds to load a certain profile for a given <code>BKBlukiiDescription</code> it will determine whether the given <code>BKBlukiiDescription</code> already belongs to a <code>BKBlukiiDeviceContext</code> instance.
+            If so the <code>BKProfileLoader</code> will add the resulting <code>BKProfileHandler</code> for the loaded profile to that existing context.
+            Otherwise it will create a new <code>BKBlukiiDeviceContext</code> and add the <code>BKProfileHandler</code> to it.<br /><br />
+            The basic function of a <code>BKBlukiiDeviceContext</code> is pretty simple.
+            It maintains a set of <code>BKProfileHandler</code> objects, which result from loading a profile.
+            After a <code>BKProfleLoader</code> succeeded loading a profile, it will set the delegate of the underlying <code>CBPeripheral</code> of the <code>BKBlukiiDescription</code> to the associated <code>BKBlukiiDeviceContext</code>.
+            The <code>BKBlukiiDeviceContext</code> will now distribute the peripheral callbacks to the appropriate <code>BKProfileHandler</code>.
+        </div>
+        <div class="note">
+            <aside>
+                <b>Note:</b> In applications in which you want to use more advanced <code>CBPeripheral</code> features or in which you need to set the peripherals delegate to a different object you can forward the delegate callbacks to the <code>BKBlukiiDeviceContext</code> by using the the following methods:
+                <ul>
+                    <li>
+                        <code>handleDidUpdateValueForCharacteristic(_:fromPeripheral:error:)</code>
+                    </li>
+                    <li>
+                        <code>handleDidWriteValueForCharacteristic(_:fromPeripheral:error:)</code>
+                    </li>
+                    <li>
+                        <code>handleDidUpdateSubscriptionForCharacteristic(_:fromPeripheral:error:)</code>
+                    </li>
+                </ul>
+                Learn more in <a href="../Chapters/LowLevelUsage.html" target="ContentFrame">Low-Level Usage</a>
+            </aside>
+        </div>
+        
+        
+        <h3 id="Maintaining_blukii_Device_Contexts">Maintaining blukii Device Contexts</h3>
+        <div class="text">
+            If there is a <code>CBPeripheral</code>, which belongs to more than one <code>BKBlukiiDescription</code> and one of these <code>BKBlukiiDescriptions</code> already belongs to a <code>BKBlukiiDeviceContext</code> you must not load a profile for one of the other <code>BKBlukiiDescriptions</code>.
+            Elsewise the concrete <code>BKProfileLoader</code> will not find a <code>BKBlukiiDeviceContext</code> associated with the <code>BKBlukiiDescription</code> and create a new context.
+            This will lead to multiple <code>BKBlukiiDeviceContexts</code> for one peripheral.
+            In such a situation peripheral callbacks may not be assigned unambiguously to one <code>BKBlukiiDeviceContext</code>.
+            To ensure your application will never run into such a situation the <code>BKBlukiiDeviceContext</code> class will send a notification to all existing instances in its initializer.
+            This notification contains the underlying <code>CBPeripheral</code> object of the <code>BKBlukiiDescription</code> that a <code>BKBlukiiDeviceContext</code> instance should be created for.
+            The receiving <code>BKBlukiiDeviceContext</code> instances will check if the underlying <code>CBPeripheral</code> object of their associated <code>BKBlukiiDescription</code> instances is equal to the one included in the notification.
+            If there is a match in one instance it will raise a <code>BKMultipleDeviceContextsForPeripheralException</code>.<br \><br \>
+            <a class="figure_ref" href="figure_3.1">Figure 3.1</a> shows a situation that will lead to the raise of an <code>BKMultipleDeviceContextsForPeripheralException</code>.
+            <figure id="figure_3.1">
+                <figcaption>
+                    <b>Figure 3.1</b>&nbsp;&nbsp;&nbsp;Invalid map between multiple blukii descriptions and device contexts
+                </figcaption>
+                <img src="../Media/ContextHandling.png" width="850" />
+            </figure>
+        </div>
+    </body>
+</html>

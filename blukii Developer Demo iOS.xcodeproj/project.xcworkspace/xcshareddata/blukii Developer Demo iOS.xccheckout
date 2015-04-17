@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E24BE085-7E60-48A7-8EFC-41FDC37D9F70</string>
+	<key>IDESourceControlProjectName</key>
+	<string>blukii Developer Demo iOS</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>540D7D11D0E9DAD5F59BEAD2E545F9D5FED6EB53</key>
+		<string>https://github.com/schneiderma/blukii_Developer_Demo_iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>blukii Developer Demo iOS.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>540D7D11D0E9DAD5F59BEAD2E545F9D5FED6EB53</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/schneiderma/blukii_Developer_Demo_iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>540D7D11D0E9DAD5F59BEAD2E545F9D5FED6EB53</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>540D7D11D0E9DAD5F59BEAD2E545F9D5FED6EB53</string>
+			<key>IDESourceControlWCCName</key>
+			<string>blukii_Developer_Demo_iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>

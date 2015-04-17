@@ -1,0 +1,10 @@
+framework module BlukiiKit {
+  umbrella header "BlukiiKit.h"
+
+  export *
+  module * { export * }
+}
+
+module BlukiiKit.Swift {
+    header "BlukiiKit-Swift.h"
+}
