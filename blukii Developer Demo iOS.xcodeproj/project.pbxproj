@@ -15,9 +15,9 @@
 		5F8AD5041AE10EB000A8568E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5011AE10EB000A8568E /* MBProgressHUD.m */; };
 		5F8AD5051AE10EB000A8568E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5021AE10EB000A8568E /* TableViewController.swift */; };
 		5F8AD5061AE10EB000A8568E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5031AE10EB000A8568E /* DetailViewController.swift */; };
-		5F8AD5081AE10F0900A8568E /* BlukiiKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8AD5071AE10F0900A8568E /* BlukiiKit.framework */; };
-		5F8AD5091AE10F0900A8568E /* BlukiiKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8AD5071AE10F0900A8568E /* BlukiiKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */; };
+		5F8EAE6D1AF2623B00E1EB36 /* BlukiiKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8EAE6C1AF2623B00E1EB36 /* BlukiiKit.framework */; };
+		5F8EAE6E1AF2623B00E1EB36 /* BlukiiKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8EAE6C1AF2623B00E1EB36 /* BlukiiKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,13 +31,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5F8AD50A1AE10F0900A8568E /* Embed Frameworks */ = {
+		5F8EAE6F1AF2623B00E1EB36 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F8AD5091AE10F0900A8568E /* BlukiiKit.framework in Embed Frameworks */,
+				5F8EAE6E1AF2623B00E1EB36 /* BlukiiKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,8 +59,8 @@
 		5F8AD5011AE10EB000A8568E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		5F8AD5021AE10EB000A8568E /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		5F8AD5031AE10EB000A8568E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		5F8AD5071AE10F0900A8568E /* BlukiiKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlukiiKit.framework; sourceTree = "<group>"; };
 		5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		5F8EAE6C1AF2623B00E1EB36 /* BlukiiKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BlukiiKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */,
-				5F8AD5081AE10F0900A8568E /* BlukiiKit.framework in Frameworks */,
+				5F8EAE6D1AF2623B00E1EB36 /* BlukiiKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,8 +86,8 @@
 		5F8AD4D11AE10DE200A8568E = {
 			isa = PBXGroup;
 			children = (
+				5F8EAE6C1AF2623B00E1EB36 /* BlukiiKit.framework */,
 				5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */,
-				5F8AD5071AE10F0900A8568E /* BlukiiKit.framework */,
 				5F8AD4DC1AE10DE200A8568E /* blukii Developer Demo iOS */,
 				5F8AD4F21AE10DE200A8568E /* blukii Developer Demo iOSTests */,
 				5F8AD4DB1AE10DE200A8568E /* Products */,
@@ -155,7 +155,7 @@
 				5F8AD4D61AE10DE200A8568E /* Sources */,
 				5F8AD4D71AE10DE200A8568E /* Frameworks */,
 				5F8AD4D81AE10DE200A8568E /* Resources */,
-				5F8AD50A1AE10F0900A8568E /* Embed Frameworks */,
+				5F8EAE6F1AF2623B00E1EB36 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -462,6 +462,7 @@
 				5F8AD4FB1AE10DE200A8568E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5F8AD4FC1AE10DE200A8568E /* Build configuration list for PBXNativeTarget "blukii Developer Demo iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -470,6 +471,7 @@
 				5F8AD4FE1AE10DE200A8568E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
