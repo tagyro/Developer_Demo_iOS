@@ -36,7 +36,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:"applicationDidEnterBackground:", name:UIApplicationDidEnterBackgroundNotification, object: nil)
         if blukii == nil {
             let alert = UIAlertView(title: "No Blukii Selected", message: "Please choose a Blukii.", delegate: nil, cancelButtonTitle: "OK")
             alert.show()
@@ -46,7 +46,6 @@ class DetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
-        stopAll()
         blukiiDescription = nil
         blukiiContext = nil
     }
@@ -54,6 +53,15 @@ class DetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func navigationShouldPopOnBackButton() -> Bool {
+        stopAll()
+        return false
+    }
+    
+    func applicationDidEnterBackground(notification: NSNotification) {
+        stopAll()
     }
     
     @IBAction func btRefreshData(sender: AnyObject) {
@@ -135,11 +143,16 @@ class DetailViewController: UIViewController {
     }
     
     func stopAll(){
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.labelText = "Disable Profiles"
         self.blukiiContext?.temperature?.disableProfile({ (characteristic, error) -> () in
             if error == nil {
                 println("Temperature Successful disabled")
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                self.navigationController?.popViewControllerAnimated(true)
             } else {
                 println(error)
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             }
         })
     }
