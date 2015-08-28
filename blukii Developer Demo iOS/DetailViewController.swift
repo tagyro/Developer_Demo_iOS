@@ -109,6 +109,40 @@ class DetailViewController: UIViewController {
 
         })
         
+        self.blukiiContext?.accelerometer?.enableProfile({
+            (characteristic, error) -> () in
+            if error == nil {
+                println("Blukii AccelerometerProfile Enabled")
+                self.blukiiContext?.accelerometer?.updateRange({ (characteristic, error) -> () in
+                    if error == nil {
+                        println("Range Updated Successful")
+                        self.blukiiContext?.accelerometer?.changeRangeTo(BKAccelerometerRange.Small, completion: { (characteristic, error) -> () in
+                            if error == nil {
+                                println("Range successful Changed")
+                                self.blukiiContext?.accelerometer?.subscribeToXValue({ (characteristic, error) -> () in
+                                    println("xValue Successful Subscribe")
+                                    }, callOnNotify: { (characteristic, error) -> () in
+                                        println("Notify")
+                                        var xValue = self.blukiiContext?.accelerometer?.xValue
+                                        println(xValue)
+                                        if let value = xValue {
+                                            self.lbX.text = String(stringInterpolationSegment: value)
+                                        }
+                                })
+                            } else {
+                                println(error)
+                            }
+                        })
+                    } else {
+                        println(error)
+                    }
+                })
+            } else {
+                println(error)
+            }
+            
+        })
+        
     }
     
    
@@ -127,7 +161,15 @@ class DetailViewController: UIViewController {
                     if error == nil {
                         self.blukiiContext = blukiiDeviceContext
                         println("Blukii Battery Status Ready")
-                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                        BKAccelerometerProfileLoader().loadProfileForBlukii(self.blukiiDescription!, completeWith: {
+                            (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
+                            if error == nil {
+                                println("Blukii AccelerometerProfile Loaded")
+                                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                            } else {
+                                println(error)
+                            }
+                        })
                     } else {
                         println(error)
                     }
@@ -148,8 +190,16 @@ class DetailViewController: UIViewController {
         self.blukiiContext?.temperature?.disableProfile({ (characteristic, error) -> () in
             if error == nil {
                 println("Temperature Successful disabled")
-                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-                self.navigationController?.popViewControllerAnimated(true)
+                self.blukiiContext?.accelerometer?.disableProfile({ (characteristic, error) -> () in
+                    if error == nil {
+                        println("Accelerometer Successful disabled")
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                        self.navigationController?.popViewControllerAnimated(true)
+                    } else {
+                        println(error)
+                        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                    }
+                })
             } else {
                 println(error)
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
