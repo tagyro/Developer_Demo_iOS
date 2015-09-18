@@ -84,37 +84,37 @@
 		<data>
 		aOqq4tDN8kTbI8/qsZxDgSMJ1Jg=
 		</data>
-		<key>Headers/BlukiiKit-Swift.h</key>
+		<key>Headers/blukiiKit-Swift.h</key>
 		<data>
-		Tm5ReoP5/KhwIxuG87YRPqYeYs0=
+		Ze+yVwDvdvieKvg6u34PIDYdUpQ=
 		</data>
-		<key>Headers/BlukiiKit.h</key>
+		<key>Headers/blukiiKit.h</key>
 		<data>
 		HKWcXxM03zGhLqePxxLZBqyC1vc=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		ui5qeZQt2Y7rDlU0MDGuaqpgzCw=
+		GBTV/yD4Eq+KZ0Cmm9kkleW+VBU=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm.swiftdoc</key>
+		<key>Modules/blukiiKit.swiftmodule/arm.swiftdoc</key>
 		<data>
-		mv3kpv3tutDE0jFT0z9Wvv5gEio=
+		iEwqJYxKumruk4nuRcyx27dnwVw=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm.swiftmodule</key>
+		<key>Modules/blukiiKit.swiftmodule/arm.swiftmodule</key>
 		<data>
-		4LcY/hTatseH7fvuGJbRcCcIga0=
+		4ZzdqmGnKCGKoOUSNAZC1cq4vTI=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm64.swiftdoc</key>
+		<key>Modules/blukiiKit.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		CxBqVcxQdnq8JkD4Fztv7VEAjt4=
+		/BhXafuN1Ja0qd3YJA63zk9sWeo=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm64.swiftmodule</key>
+		<key>Modules/blukiiKit.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		m45TEZKMZYde1ossTrfVvST/f2c=
+		TFFYICtW2vX5VxeNu2pMO8P8GHc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		c81A4Vjn9RTcSrBre4OLK+mLZTk=
+		/M/d8sKjS/TxPw4509eZyIiVtF4=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -199,33 +199,33 @@
 		<data>
 		aOqq4tDN8kTbI8/qsZxDgSMJ1Jg=
 		</data>
-		<key>Headers/BlukiiKit-Swift.h</key>
+		<key>Headers/blukiiKit-Swift.h</key>
 		<data>
-		Tm5ReoP5/KhwIxuG87YRPqYeYs0=
+		Ze+yVwDvdvieKvg6u34PIDYdUpQ=
 		</data>
-		<key>Headers/BlukiiKit.h</key>
+		<key>Headers/blukiiKit.h</key>
 		<data>
 		HKWcXxM03zGhLqePxxLZBqyC1vc=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm.swiftdoc</key>
+		<key>Modules/blukiiKit.swiftmodule/arm.swiftdoc</key>
 		<data>
-		mv3kpv3tutDE0jFT0z9Wvv5gEio=
+		iEwqJYxKumruk4nuRcyx27dnwVw=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm.swiftmodule</key>
+		<key>Modules/blukiiKit.swiftmodule/arm.swiftmodule</key>
 		<data>
-		4LcY/hTatseH7fvuGJbRcCcIga0=
+		4ZzdqmGnKCGKoOUSNAZC1cq4vTI=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm64.swiftdoc</key>
+		<key>Modules/blukiiKit.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		CxBqVcxQdnq8JkD4Fztv7VEAjt4=
+		/BhXafuN1Ja0qd3YJA63zk9sWeo=
 		</data>
-		<key>Modules/BlukiiKit.swiftmodule/arm64.swiftmodule</key>
+		<key>Modules/blukiiKit.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		m45TEZKMZYde1ossTrfVvST/f2c=
+		TFFYICtW2vX5VxeNu2pMO8P8GHc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		c81A4Vjn9RTcSrBre4OLK+mLZTk=
+		/M/d8sKjS/TxPw4509eZyIiVtF4=
 		</data>
 	</dict>
 	<key>rules</key>

@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBluetooth
-import BlukiiKit
+import blukiiKit
 
 class TableViewController: UITableViewController, CBCentralManagerDelegate {
 
@@ -33,7 +33,7 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
         rssis = [NSNumber]()
         names = [NSString]()
         if connectedBlukii != nil {
-            centralManager.cancelPeripheralConnection(connectedBlukii)
+            centralManager.cancelPeripheralConnection(connectedBlukii!)
         }
         //Suche nach Blukiis wieder starten
         findPeripherals()
@@ -51,7 +51,7 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
         
         cell.textLabel?.text = names[indexPath.row] as String
         cell.detailTextLabel?.text = rssis[indexPath.row].stringValue
@@ -62,7 +62,7 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.labelText = "Connect Blukii"
         centralManager.connectPeripheral(blukiis[indexPath.row], options: nil)
     }
@@ -77,13 +77,13 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
     
     //MARK: CBCentralManagerDelegate
     
-    func centralManagerDidUpdateState(central: CBCentralManager!) {
+    func centralManagerDidUpdateState(central: CBCentralManager) {
         if centralManager.state == CBCentralManagerState.PoweredOn {
             self.centralManager.scanForPeripheralsWithServices(nil, options: nil)
         }
     }
     
-    func centralManager(central: CBCentralManager!, didDiscoverPeripheral peripheral: CBPeripheral!, advertisementData: [NSObject : AnyObject]!, RSSI: NSNumber!) {
+    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         //Peripheral found
         if BKBlukiiDescription.isBlukiiDevice(peripheral) {
             blukiis.append(peripheral)
@@ -91,13 +91,13 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
             names.append(advertisementData[CBAdvertisementDataLocalNameKey]! as! NSString)
             tableView.reloadData()
         } else {
-            println("No Blukii Peripheral")
+            print("No Blukii Peripheral")
         }
 
     }
     
-    func centralManager(central: CBCentralManager!, didConnectPeripheral peripheral: CBPeripheral!) {
-        println("Device Connected")
+    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+        print("Device Connected")
         connectedBlukii = peripheral
         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
         self.performSegueWithIdentifier("showDetailView", sender: peripheral)
@@ -105,16 +105,16 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
     }
     
     
-    func centralManager(central: CBCentralManager!, didDisconnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
-        println("Device Disconnected")
+    func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+        print("Device Disconnected")
         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
         if self.navigationController?.topViewController != self {
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
     }
     
-    func centralManager(central: CBCentralManager!, didFailToConnectPeripheral peripheral: CBPeripheral!, error: NSError!) {
-        println("Failed to Connect")
+    func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+        print("Failed to Connect")
         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
     }
     

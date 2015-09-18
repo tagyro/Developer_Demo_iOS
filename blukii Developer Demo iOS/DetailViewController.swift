@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBluetooth
-import BlukiiKit
+import blukiiKit
 
 
 class DetailViewController: UIViewController {
@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
     
     @IBAction func btRefreshData(sender: AnyObject) {
 
-        println("getData")
+        print("getData")
         
         self.blukiiContext?.blukiiDescription.determineDeviceInformation(completeWith: {
             (error: NSError?) -> () in
@@ -76,7 +76,7 @@ class DetailViewController: UIViewController {
                 self.lbHardwareVersion.text = self.blukiiContext?.blukiiDescription.hardwareRevision
                 self.lbManufactor.text = self.blukiiContext?.blukiiDescription.manufacterName
             } else {
-                println(error)
+                print(error)
             }
         })
 
@@ -89,11 +89,11 @@ class DetailViewController: UIViewController {
                         let temperature = self.blukiiContext?.temperature?.value
                         self.lbTemperatur.text = String(format: "%f", temperature!)
                     } else {
-                        println(error)
+                        print(error)
                     }
                 })
             } else {
-                println(error)
+                print(error)
             }
         })
 
@@ -104,7 +104,7 @@ class DetailViewController: UIViewController {
                 let batteryLevel = self.blukiiContext?.batteryService?.batteryLevel
                 self.lbBattery.text = String (batteryLevel!)
             } else {
-                println(error)
+                print(error)
             }
 
         })
@@ -112,33 +112,33 @@ class DetailViewController: UIViewController {
         self.blukiiContext?.accelerometer?.enableProfile({
             (characteristic, error) -> () in
             if error == nil {
-                println("Blukii AccelerometerProfile Enabled")
+                print("Blukii AccelerometerProfile Enabled")
                 self.blukiiContext?.accelerometer?.updateRange({ (characteristic, error) -> () in
                     if error == nil {
-                        println("Range Updated Successful")
+                        print("Range Updated Successful")
                         self.blukiiContext?.accelerometer?.changeRangeTo(BKAccelerometerRange.Small, completion: { (characteristic, error) -> () in
                             if error == nil {
-                                println("Range successful Changed")
+                                print("Range successful Changed")
                                 self.blukiiContext?.accelerometer?.subscribeToXValue({ (characteristic, error) -> () in
-                                    println("xValue Successful Subscribe")
+                                    print("xValue Successful Subscribe")
                                     }, callOnNotify: { (characteristic, error) -> () in
-                                        println("Notify")
-                                        var xValue = self.blukiiContext?.accelerometer?.xValue
-                                        println(xValue)
+                                        print("Notify")
+                                        let xValue = self.blukiiContext?.accelerometer?.xValue
+                                        print(xValue)
                                         if let value = xValue {
                                             self.lbX.text = String(stringInterpolationSegment: value)
                                         }
                                 })
                             } else {
-                                println(error)
+                                print(error)
                             }
                         })
                     } else {
-                        println(error)
+                        print(error)
                     }
                 })
             } else {
-                println(error)
+                print(error)
             }
             
         })
@@ -147,7 +147,7 @@ class DetailViewController: UIViewController {
     
    
     func loadProfiles(){
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.labelText = "Load Profiles"
         blukiiDescription = BKBatteryServiceProfileLoader.evaluatePeripheral(blukii!)
         //Load Temperature-Profile
@@ -155,27 +155,27 @@ class DetailViewController: UIViewController {
             (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
             if error == nil {
                 self.blukiiContext = blukiiDeviceContext!
-                println("Blukii Temperature Ready")
+                print("Blukii Temperature Ready")
                 BKBatteryServiceProfileLoader().loadProfileForBlukii(self.blukiiDescription!, completeWith: {
                     (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
                     if error == nil {
                         self.blukiiContext = blukiiDeviceContext
-                        println("Blukii Battery Status Ready")
+                        print("Blukii Battery Status Ready")
                         BKAccelerometerProfileLoader().loadProfileForBlukii(self.blukiiDescription!, completeWith: {
                             (blukiiDeviceContext: BKBlukiiDeviceContext?, error: NSError?) -> () in
                             if error == nil {
-                                println("Blukii AccelerometerProfile Loaded")
+                                print("Blukii AccelerometerProfile Loaded")
                                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                             } else {
-                                println(error)
+                                print(error)
                             }
                         })
                     } else {
-                        println(error)
+                        print(error)
                     }
                 })
             } else {
-                println(error)
+                print(error)
             }
             
         })
@@ -185,23 +185,23 @@ class DetailViewController: UIViewController {
     }
     
     func stopAll(){
-        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         hud.labelText = "Disable Profiles"
         self.blukiiContext?.temperature?.disableProfile({ (characteristic, error) -> () in
             if error == nil {
-                println("Temperature Successful disabled")
+                print("Temperature Successful disabled")
                 self.blukiiContext?.accelerometer?.disableProfile({ (characteristic, error) -> () in
                     if error == nil {
-                        println("Accelerometer Successful disabled")
+                        print("Accelerometer Successful disabled")
                         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                         self.navigationController?.popViewControllerAnimated(true)
                     } else {
-                        println(error)
+                        print(error)
                         MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                     }
                 })
             } else {
-                println(error)
+                print(error)
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             }
         })
