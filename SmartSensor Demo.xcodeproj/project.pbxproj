@@ -46,13 +46,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5F8AD4DA1AE10DE200A8568E /* blukii Developer Demo iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "blukii Developer Demo iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F8AD4DA1AE10DE200A8568E /* SmartSensor Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SmartSensor Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F8AD4DE1AE10DE200A8568E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F8AD4DF1AE10DE200A8568E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F8AD4E41AE10DE200A8568E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5F8AD4E61AE10DE200A8568E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5F8AD4E91AE10DE200A8568E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		5F8AD4EF1AE10DE200A8568E /* blukii Developer Demo iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "blukii Developer Demo iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F8AD4EF1AE10DE200A8568E /* SmartSensor Demo.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SmartSensor Demo.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F8AD4F41AE10DE200A8568E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F8AD4F51AE10DE200A8568E /* blukii_Developer_Demo_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blukii_Developer_Demo_iOSTests.swift; sourceTree = "<group>"; };
 		5F8AD4FF1AE10EAF00A8568E /* blukii Developer Demo iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "blukii Developer Demo iOS-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -100,8 +100,8 @@
 		5F8AD4DB1AE10DE200A8568E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5F8AD4DA1AE10DE200A8568E /* blukii Developer Demo iOS.app */,
-				5F8AD4EF1AE10DE200A8568E /* blukii Developer Demo iOSTests.xctest */,
+				5F8AD4DA1AE10DE200A8568E /* SmartSensor Demo.app */,
+				5F8AD4EF1AE10DE200A8568E /* SmartSensor Demo.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,9 +153,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5F8AD4D91AE10DE200A8568E /* blukii Developer Demo iOS */ = {
+		5F8AD4D91AE10DE200A8568E /* SmartSensor Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5F8AD4F91AE10DE200A8568E /* Build configuration list for PBXNativeTarget "blukii Developer Demo iOS" */;
+			buildConfigurationList = 5F8AD4F91AE10DE200A8568E /* Build configuration list for PBXNativeTarget "SmartSensor Demo" */;
 			buildPhases = (
 				5F8AD4D61AE10DE200A8568E /* Sources */,
 				5F8AD4D71AE10DE200A8568E /* Frameworks */,
@@ -166,14 +166,14 @@
 			);
 			dependencies = (
 			);
-			name = "blukii Developer Demo iOS";
+			name = "SmartSensor Demo";
 			productName = "blukii Developer Demo iOS";
-			productReference = 5F8AD4DA1AE10DE200A8568E /* blukii Developer Demo iOS.app */;
+			productReference = 5F8AD4DA1AE10DE200A8568E /* SmartSensor Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5F8AD4EE1AE10DE200A8568E /* blukii Developer Demo iOSTests */ = {
+		5F8AD4EE1AE10DE200A8568E /* SmartSensor DemoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5F8AD4FC1AE10DE200A8568E /* Build configuration list for PBXNativeTarget "blukii Developer Demo iOSTests" */;
+			buildConfigurationList = 5F8AD4FC1AE10DE200A8568E /* Build configuration list for PBXNativeTarget "SmartSensor DemoTests" */;
 			buildPhases = (
 				5F8AD4EB1AE10DE200A8568E /* Sources */,
 				5F8AD4EC1AE10DE200A8568E /* Frameworks */,
@@ -184,9 +184,9 @@
 			dependencies = (
 				5F8AD4F11AE10DE200A8568E /* PBXTargetDependency */,
 			);
-			name = "blukii Developer Demo iOSTests";
+			name = "SmartSensor DemoTests";
 			productName = "blukii Developer Demo iOSTests";
-			productReference = 5F8AD4EF1AE10DE200A8568E /* blukii Developer Demo iOSTests.xctest */;
+			productReference = 5F8AD4EF1AE10DE200A8568E /* SmartSensor Demo.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -210,7 +210,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5F8AD4D51AE10DE200A8568E /* Build configuration list for PBXProject "blukii Developer Demo iOS" */;
+			buildConfigurationList = 5F8AD4D51AE10DE200A8568E /* Build configuration list for PBXProject "SmartSensor Demo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -223,8 +223,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5F8AD4D91AE10DE200A8568E /* blukii Developer Demo iOS */,
-				5F8AD4EE1AE10DE200A8568E /* blukii Developer Demo iOSTests */,
+				5F8AD4D91AE10DE200A8568E /* SmartSensor Demo */,
+				5F8AD4EE1AE10DE200A8568E /* SmartSensor DemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -275,7 +275,7 @@
 /* Begin PBXTargetDependency section */
 		5F8AD4F11AE10DE200A8568E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5F8AD4D91AE10DE200A8568E /* blukii Developer Demo iOS */;
+			target = 5F8AD4D91AE10DE200A8568E /* SmartSensor Demo */;
 			targetProxy = 5F8AD4F01AE10DE200A8568E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -399,7 +399,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schneiderpen.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "SmartSensor Demo";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "blukii Developer Demo iOS/blukii Developer Demo iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -421,7 +421,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schneiderpen.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "SmartSensor Demo";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "blukii Developer Demo iOS/blukii Developer Demo iOS-Bridging-Header.h";
 			};
@@ -439,8 +439,8 @@
 				INFOPLIST_FILE = "blukii Developer Demo iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schneiderpen.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/blukii Developer Demo iOS.app/blukii Developer Demo iOS";
+				PRODUCT_NAME = "SmartSensor Demo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartSensor Demo.app/SmartSensor Demo";
 			};
 			name = Debug;
 		};
@@ -452,15 +452,15 @@
 				INFOPLIST_FILE = "blukii Developer Demo iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.schneiderpen.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/blukii Developer Demo iOS.app/blukii Developer Demo iOS";
+				PRODUCT_NAME = "SmartSensor Demo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SmartSensor Demo.app/SmartSensor Demo";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5F8AD4D51AE10DE200A8568E /* Build configuration list for PBXProject "blukii Developer Demo iOS" */ = {
+		5F8AD4D51AE10DE200A8568E /* Build configuration list for PBXProject "SmartSensor Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5F8AD4F71AE10DE200A8568E /* Debug */,
@@ -469,7 +469,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5F8AD4F91AE10DE200A8568E /* Build configuration list for PBXNativeTarget "blukii Developer Demo iOS" */ = {
+		5F8AD4F91AE10DE200A8568E /* Build configuration list for PBXNativeTarget "SmartSensor Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5F8AD4FA1AE10DE200A8568E /* Debug */,
@@ -478,7 +478,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5F8AD4FC1AE10DE200A8568E /* Build configuration list for PBXNativeTarget "blukii Developer Demo iOSTests" */ = {
+		5F8AD4FC1AE10DE200A8568E /* Build configuration list for PBXNativeTarget "SmartSensor DemoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5F8AD4FD1AE10DE200A8568E /* Debug */,
