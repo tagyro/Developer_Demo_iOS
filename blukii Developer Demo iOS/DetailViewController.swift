@@ -87,7 +87,7 @@ class DetailViewController: UIViewController {
                     (characteristic, error) -> () in
                     if error == nil {
                         let temperature = self.blukiiContext?.temperature?.value
-                        self.lbTemperatur.text = String(format: "%f", temperature!)
+                        self.lbTemperatur.text = String(format: "%.2f", temperature!)
                     } else {
                         print(error)
                     }
@@ -122,11 +122,28 @@ class DetailViewController: UIViewController {
                                 self.blukiiContext?.accelerometer?.subscribeToXValue({ (characteristic, error) -> () in
                                     print("xValue Successful Subscribe")
                                     }, callOnNotify: { (characteristic, error) -> () in
-                                        print("Notify")
                                         let xValue = self.blukiiContext?.accelerometer?.xValue
-                                        print(xValue)
+                                        print("xValue: \(xValue)")
                                         if let value = xValue {
                                             self.lbX.text = String(stringInterpolationSegment: value)
+                                        }
+                                })
+                                self.blukiiContext?.accelerometer?.subscribeToYValue({ (characteristic, error) -> () in
+                                    print("yValue Successful Subscribe")
+                                    }, callOnNotify: { (characteristic, error) -> () in
+                                        let yValue = self.blukiiContext?.accelerometer?.yValue
+                                        print("yValue: \(yValue)")
+                                        if let value = yValue {
+                                            self.lbY.text = String(stringInterpolationSegment: value)
+                                        }
+                                })
+                                self.blukiiContext?.accelerometer?.subscribeToZValue({ (characteristic, error) -> () in
+                                    print("zValue Successful Subscribe")
+                                    }, callOnNotify: { (characteristic, error) -> () in
+                                        let zValue = self.blukiiContext?.accelerometer?.zValue
+                                        print("zValue: \(zValue)")
+                                        if let value = zValue {
+                                            self.lbZ.text = String(stringInterpolationSegment: value)
                                         }
                                 })
                             } else {
