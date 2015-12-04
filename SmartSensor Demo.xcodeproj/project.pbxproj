@@ -16,9 +16,9 @@
 		5F8AD5051AE10EB000A8568E /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5021AE10EB000A8568E /* TableViewController.swift */; };
 		5F8AD5061AE10EB000A8568E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5031AE10EB000A8568E /* DetailViewController.swift */; };
 		5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */; };
-		5F8FA6641BAC0FE100E78D1F /* blukiiKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8FA6631BAC0FE100E78D1F /* blukiiKit.framework */; };
-		5F8FA6651BAC0FE100E78D1F /* blukiiKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8FA6631BAC0FE100E78D1F /* blukiiKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F9EA0151B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9EA0131B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m */; };
+		5FA182251C1168D800B038D1 /* blukiiKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA182241C1168D800B038D1 /* blukiiKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		5FA182271C1169D000B038D1 /* blukiiKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA182241C1168D800B038D1 /* blukiiKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F8FA6651BAC0FE100E78D1F /* blukiiKit.framework in Embed Frameworks */,
+				5FA182271C1169D000B038D1 /* blukiiKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,9 +61,9 @@
 		5F8AD5021AE10EB000A8568E /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		5F8AD5031AE10EB000A8568E /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		5F8FA6631BAC0FE100E78D1F /* blukiiKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = blukiiKit.framework; sourceTree = "<group>"; };
 		5F9EA0131B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		5F9EA0141B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		5FA182241C1168D800B038D1 /* blukiiKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = blukiiKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */,
-				5F8FA6641BAC0FE100E78D1F /* blukiiKit.framework in Frameworks */,
+				5FA182251C1168D800B038D1 /* blukiiKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +89,7 @@
 		5F8AD4D11AE10DE200A8568E = {
 			isa = PBXGroup;
 			children = (
-				5F8FA6631BAC0FE100E78D1F /* blukiiKit.framework */,
+				5FA182241C1168D800B038D1 /* blukiiKit.framework */,
 				5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */,
 				5F8AD4DC1AE10DE200A8568E /* blukii Developer Demo iOS */,
 				5F8AD4F21AE10DE200A8568E /* blukii Developer Demo iOSTests */,
