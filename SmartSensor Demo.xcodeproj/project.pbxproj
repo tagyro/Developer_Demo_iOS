@@ -17,6 +17,8 @@
 		5F8AD5061AE10EB000A8568E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8AD5031AE10EB000A8568E /* DetailViewController.swift */; };
 		5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */; };
 		5F9EA0151B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F9EA0131B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m */; };
+		5FA671AE1CFD7A0300CB11B4 /* blukiiKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA671AD1CFD7A0300CB11B4 /* blukiiKit.framework */; };
+		5FA671AF1CFD7A0300CB11B4 /* blukiiKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA671AD1CFD7A0300CB11B4 /* blukiiKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +30,20 @@
 			remoteInfo = "blukii Developer Demo iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5FA671B01CFD7A0300CB11B4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5FA671AF1CFD7A0300CB11B4 /* blukiiKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5F8AD4DA1AE10DE200A8568E /* SmartSensor Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SmartSensor Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +63,7 @@
 		5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		5F9EA0131B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		5F9EA0141B68BD9F00C3AC22 /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		5FA671AD1CFD7A0300CB11B4 /* blukiiKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = blukiiKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F8AD50C1AE10F1800A8568E /* CoreBluetooth.framework in Frameworks */,
+				5FA671AE1CFD7A0300CB11B4 /* blukiiKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +89,7 @@
 		5F8AD4D11AE10DE200A8568E = {
 			isa = PBXGroup;
 			children = (
+				5FA671AD1CFD7A0300CB11B4 /* blukiiKit.framework */,
 				5F8AD50B1AE10F1800A8568E /* CoreBluetooth.framework */,
 				5F8AD4DC1AE10DE200A8568E /* blukii Developer Demo iOS */,
 				5F8AD4F21AE10DE200A8568E /* blukii Developer Demo iOSTests */,
@@ -141,6 +160,7 @@
 				5F8AD4D61AE10DE200A8568E /* Sources */,
 				5F8AD4D71AE10DE200A8568E /* Frameworks */,
 				5F8AD4D81AE10DE200A8568E /* Resources */,
+				5FA671B01CFD7A0300CB11B4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

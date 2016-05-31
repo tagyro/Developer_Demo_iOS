@@ -1,0 +1,75 @@
+@startuml
+
+skinparam sequence {
+	ParticipantFontColor white
+	ParticipantBorderColor #32364A
+	ParticipantBackgroundColor #32364A
+	
+	ArrowColor #FC5F1A 
+	
+	LifeLineBorderColor #32364A
+	LifeLineBackgroundColor #A6A6A6
+}
+skinparam Shadowing false
+
+Application -> "Core Bluetooth": Start scan for peripherals
+activate "Core Bluetooth"
+
+Peripheral --> "Core Bluetooth": Advertising
+
+"Core Bluetooth" --> Application: Did discover peripheral
+deactivate "Core Bluetooth"
+
+Application -> "blukii Kit": Load profile for blukii
+activate "blukii Kit"
+
+"blukii Kit" -> "Core Bluetooth": Discover service and characteristics
+activate "Core Bluetooth"
+
+"Core Bluetooth" -> Peripheral: Discover service
+
+Peripheral --> "Core Bluetooth"
+
+"Core Bluetooth" -> Peripheral: Discover characteristics for service
+
+Peripheral --> "Core Bluetooth"
+
+"Core Bluetooth" --> "blukii Kit": Did discover service and characteristics
+deactivate "Core Bluetooth"
+
+"blukii Kit" --> Application: Did load profile
+deactivate "blukii Kit"
+
+
+Application -> Peripheral: Become delegate
+Application <-- Peripheral
+
+
+Peripheral --> "Core Bluetooth": Notify
+"Core Bluetooth" -> Application: Notify callback
+activate Application
+Application --> Application: Handling
+"Core Bluetooth" <-- Application
+deactivate Application
+
+
+Peripheral --> "Core Bluetooth": Notify
+"Core Bluetooth" -> Application: Notify Callback
+activate Application
+
+Application -> "blukii Kit": Forward notifiy
+activate "blukii Kit"
+"blukii Kit" --> "blukii Kit": Handling
+"blukii Kit" -> Application: Call on notify closure
+activate Application
+"blukii Kit" <-- Application
+deactivate Application
+
+Application <-- "blukii Kit"
+deactivate "blukii Kit"
+
+"Core Bluetooth" <-- Application
+deactivate Application
+
+@enduml
+

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>blukii Kit Programming Guide - Introduction</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../CSS/ContentPage.css" type="text/css" />
+	</head>
+	<body>
+        <h1>About blukii Kit</h1>
+        <div class="text">
+            The blukii Kit provides the modules and mechanism needed for your iOS or Mac application to communicate with <i>blukiis</i>.
+            blukiis are wearable device with several built-in sensors.
+            They provide access to these sensors and their recorded values by using the <i>Genereic Attribute Profile (GATT)</i> of the Bluetooth low energy wireless technology.
+            For more information about blukiis visit <a href="http://blukii.com/" target="_blank">blukii.com</a>.
+        </div>
+        
+        <h2>At a Glance</h2>
+        <div class="text">
+            blukii Kit is completly written in <i>Swift</i>, Apples new programming language.
+            blukii Kit aims at giving developers the opportunity to let their applications interact with the powerful features of blukiis.
+            Using modern language features like closures and tuples, blukii Kit provides an approach to achieve that goal with less code and without the need of worrying about concurrency.
+        </div>
+        
+        <h3>Architecture and Differences Between Other Frameworks</h3>
+        <div class="text">
+            While most other Bluetooth frameworks, providing access to third party hardware, act as a middleware between the operationg system's Bluetooth API and the application, blukii Kit is designed to work alongside with that API and not on top of it.
+            That means blukii Kit is not veiling the original API of the operating system, giving you as an application developer the possibility to still access low-level features when you need them. <a class="figure_ref" href="#figure_1.1">Figure 1.1</a> shows this architecture compared to the common one.
+            <figure id="figure_1.1">
+                <figcaption>
+                    <b>Figure 1.1</b>&nbsp;&nbsp;&nbsp;Comparison between blukii Kit's architecture and the common one
+                </figcaption>
+                <img src="../Media/Architecture.png" width="850px" />
+            </figure>
+            Due to blukiis communicate using Bluetooth 4.0 LE, blukii Kit is designed to work hand in hand with Apples <i>Core Bluetooth</i> framework. This is a handy framework that provides among others a simple API to discover Bluetooth 4.0 LE device, handling connection to them as a <i>central</i> and to perform <i>GATT</i> operations on them.
+            As mentioned before you can still access this lower-level API, working with blukii Kit if you need to.
+            But for most operations you want to perform with blukiis you can delegate the Bluetooth related logic to blukii Kit.
+            You simply give your peripheral (your blukii) to blukii Kit and tell it what you want to do with it.
+            blukii Kit will perform the appropriate <i>GATT</i> operations on the given perhiperal and will return the result in a high-level and easy to interpret representation to you.
+            You can also let blukii Kit interpret <i>GATT</i> callbacks you do not want to handle in your application, for you in a mixed-level application.
+        </div>
+        <div class="note">
+            <aside>
+                <b>Relevant Chapters:</b> <a href="LoadingProfilesAndHandlingADeviceContext.html">Loading Profiles and Handling a Device Context</a>, <a href="LowLevelUsage.html">Low-Level Usage</a>
+            </aside>
+        </div>
+        
+        <h3 id="Using_Blukii_Kit_in_a_Standard_Application">Using blukii Kit in a Standard Application</h3>
+        <div class="text">
+            In most of your appplications you will want to work with blukii devices on a high level.
+            For example imagine an application, which uses the blukii's temperature and humidity sensors to react on climatic changes or an application that reads out the steps recorded by a blukii.
+            In applications like this the only thing you need to touch Core Bluetooth for is the discovery of potential blukii devices and to establish a connection to identified blukiis, as illustrated in <a class="figure_ref" href="#figure_1.2">Figure 1.2</a>.
+            All other <i>GATT</i> based communication between your application and the blukii device can be delegated to blukii Kit, so in standard applications you will let blukii Kit receive all <i>GATT</i> callbacks after setting up the connection to the blukii(s).
+            <figure id="figure_1.2">
+                <figcaption>
+                    <b>Figure 1.2</b>&nbsp;&nbsp;&nbsp;Bluetooth interaction in Standard high-level applications
+                </figcaption>
+                <object data="../Media/StandardInteraction.svg" type="image/svg+xml" width="850px"></object>
+            </figure>
+        </div>
+        <div class="note">
+            <aside>
+                <b>Relevant Chapters:</b> <a href="IdentifiengAndManagingBlukiiDevices.html">Identifieng and Managing blukii Devices</a>, <a href="LoadingProfilesAndHandlingADeviceContext.html">Loading Profiles and Handling a Device Context</a>, <a href="InteractingWithProfiles.html">Interacting with Profiles</a>
+            </aside>
+        </div>
+        
+        <h3 id="Building_Long-Term_Applications_and_Accessing_Low-Level_Functions_Beside_Blukii_Kit">Building Long-Term Applications and Accessing Low-Level Functions Beside blukii Kit</h3>
+        <div class="text">
+            In some applications you may want to use features, provided by Core Bluetooth, which have nothing to do with the specific functionality of a blukii device, beside blukii specific functions.
+            For example imagine an application that uses the Switch profile of a blukii to turn some functionality of your app on or off.
+            But to avoid a lost blukii device granting access to your device's settings to a stranger you periodically check the current <i>Received Signal Strength Indicator (RSSI)</i> value of the blukii.
+            Only if the latest RSSI value is lower than a certain threshold, indicating the blukii device is really close to your device, your application should react on the change of the switch state of the blukii.<br /><br />
+            While reading the current switch state of a blukii and setting up a handler routine on changes of the value is provided by blukii Kit, the update of the RSSI value is a low-level functionality, that Core Bluetooth is responsible for.
+            As mentioned in <a href="#Using_Blukii_Kit_in_a_Standard_Application">Using blukii Kit in a Standard Application</a> you will let blukii Kit receive all <i>GATT</i> callbacks in a standard application.
+            The problem is that blukii Kit does not know how to handle your RSSI update callback and will therefore ignore it.
+            So in applications in, which you want to use low-level features in, you will need to change the pattern a little bit.
+            Instead of letting blukii Kit receive all <i>GATT</i> callbacks your application needs to become the receiver for all of these callbacks.
+            You then check what callbacks your application is responsible for and handle them.
+            When you receive a callback, that you cannot handle, you can forward it to blukii Kit, which will then try to handle it.
+            In this process, illustrated in <a class="figure_ref" href="#figure_1.3">Figure 1.3</a>, it is very important that you forward <b>all callbacks</b>, intended to be handled by blukii Kit, to blukii Kit <b>in the correct order</b>.
+            <figure id="figure_1.3">
+                <figcaption>
+                    <b>Figure 1.3</b>&nbsp;&nbsp;&nbsp;Accessing low-level Bluetooth functionality beside blukii Kit
+                </figcaption>
+                <object data="../Media/LowLevelInteraction.svg" type="image/svg+xml" width="850px"></object>
+            </figure>
+            Another typical scenario where you need to access Core Bluetooth beside blukii Kit, is a long-term application that should also handle Bluetooth events when it is in the background mode or got suspended by the operating system.
+            In iOS 7 Apple adapted the <i>State Preservation and Restoration</i>, known from UIKit, to Core Bluetooth.
+            With that new feature you can now delegate your Bluetooth role (central or peripheral) to iOS, when your application gets suspended.
+            From then your application will be launched into the background mode when a relevant event occurs.
+            This event will then be forwared to your app where you can try to handle it or forward it to blukii Kit.
+        </div>
+        <div class="note">
+            <aside>
+                <b>Relevant Chapters:</b> <a href="LowLevelUsage.html">Low-Level Usage</a>
+            </aside>
+        </div>
+        
+        <h2>How to Use This Document</h2>
+        <div class="text">
+            This Programming Guide is not designed do be a full API documentation for the whole functionality provided by blukii Kit.
+            Rather, it is mentioned to be an guided introduction into the fundamental concepts and shall give you an idea of how you efficiently design applications witht blukii Kit.<br /><br />
+        </div>
+        
+        <h2>See Also</h2>
+        <div class="text">
+            If you have never used the Core Bluetooth framework or if you are unfamiliar with basic Bluetooth low energy concepts, you should also take a look at Apple's <a href="http://developer.apple.com/library/ios/documentation/NetworkingInternetWeb/Conceptual/CoreBluetooth_concepts" target="_blank">Core Bluetooth Programmin Guide</a>.
+        </div>
+	</body>
+</html>

@@ -1,0 +1,104 @@
+@font-face {
+    font-family: 'Dosis';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Dosis SemiBold'), local('Dosis-SemiBold'), url(http://themes.googleusercontent.com/static/fonts/dosis/v2/f8qltGyj2S-SS_tsOHsjgXYhjbSpvc47ee6xR_80Hnw.woff) format('woff');
+}
+
+
+
+body {
+    font: 15px/1.2 'Dosis SemiBold', sans-serif;
+    color: #000;
+    background: #f0f0f0;
+    font-weight: lighter;
+    padding: 25px;
+}
+
+
+h1 {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    color: #0E1B33;
+    font-weight: lighter;
+}
+
+
+h2 {
+    margin-top: 60px;
+    margin-bottom: 5px;
+    color: rgba(14, 27, 51, 0.8);
+    font-weight: lighter;
+}
+
+
+h3 {
+    margin-top: 50px;
+    margin-bottom: 5px;
+    font-weight: normal;
+}
+
+
+div.note {
+    border: 1px solid;
+    border-color: #0E1B33;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+
+div.listing {
+    margin-top: 15px;
+}
+
+
+pre {
+    border: 1px solid;
+    border-color: rgba(14, 27, 51, 0.2);
+    background-color: rgba(14, 27, 51, 0.1);
+    overflow-x: auto;
+    padding: 20px;
+}
+
+
+a:link {
+    color: #FC5F1A;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+a:visited {
+    color: #FC5F1A;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+a:hover {
+    color: #FC5F1A;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+a:active {
+    color: #FC5F1A;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+tbody {
+    background-color: rgba(14, 27, 51, 0.1);
+}
+
+thead {
+    background-color: rgba(14, 27, 51, 0.8);
+    color: #FFFFFF;
+}
+
+td {
+    padding: 5px;
+}
+
+ul {
+    list-style-type: none;
+}

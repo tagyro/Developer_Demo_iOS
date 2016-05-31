@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>blukii Kit Programming Guide - Interacting with Profiles</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="../CSS/ContentPage.css" type="text/css" />
+    </head>
+    <body>
+        <h1 class="first_header">Interacting with Profiles</h1>
+        <div class="text">
+            You have learned in <a href="../Chapters/LoadingProfilesAndHandlingADeviceContext.html" target="ContentFrame">Loading Profiles and Handling a Device Context</a> that there is a concrete <code>BKProfileLoader</code> for each <i>blukii profile</i> which will discover the required Bluetooth services and characteristics for the desired profile.
+            You have also learend that a <code>BKProfileHandler</code> will be added to the <code>BKBlukiiDeviceContext</code> of the blukii for each successfully loaded profile.<br /><br />
+            This chapter will cover how you use these <code>BKProfileHandlers</code> to interact with the blukii's sensors and values.
+        </div>
+        
+        <h2 id="Terminology">Terminology</h2>
+        <div class="text">
+            As mentioned before in <a href="../Chapters/LoadingProfilesAndHandlingADeviceContext.html" target="ContentFrame">Loading Profiles and Handling a Device Context</a>, a blukii <i>profile</i> is just another term for a <i>Bleutooth service</i>.
+            We also said that a <i>service</i> is just representing a set of <i>characteristic</i>, which again represents an attribute of the device.
+            The <i>Generic Attribute Profile (GATT)</i> defines multiple operations, which you can perform on a <i>characteristic</i>.
+            The most important operations are <i>read</i>, <i>write</i> and <i>notify</i>.
+            Due to Core Bluetooth provides an API for these operations you might already be familiar with them.<br /><br />
+            As said before blukii Kit provides a concrete class, that implements the <code>BKProfileHandler</code> protocol, to interact with the characteristics of a blukii profile.
+            The provided API follows a strict terminology which should help you to understand what a function does and how to find the appropriate function for a <i>GATT</i> operation of a <i>characteristic</i>.<br />
+            Table <a class="table_ref" href="#table_4.1">Table 4.1</a> explains the cohesion between <i>GATT</i> operations on the lowest level, the Core Bluetooth API in the middle and the blukii Kit API on top.
+            <figure id="table_4.1">
+                <figcaption>
+                    <b>Table 4.1</b>&nbsp;&nbsp;&nbsp;Comparison of <i>GATT</i>, Core Bluetooth and blukii Kit operations
+                </figcaption>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>GATT</th>
+                            <th>Core Bluetooth</th>
+                            <th>blukii Kit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Read</td>
+                            <td>
+                                <code>readValueForCharacteristic(_:)</code>
+                            </td>
+                            <td>
+                                <code>updateYourCharacteristic(_:)</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Write</td>
+                            <td>
+                                <code>writeValue(_:forCharacteristic:type:)</code>
+                            </td>
+                            <td>
+                                <code>changeYourCharacteristicTo(_:completion:)</code></td>
+                        </tr>
+                        <tr>
+                            <td>Notify</td>
+                            <td>
+                                <code>setNotifyValue(_:forCharacteristic:)</code>
+                            </td>
+                            <td>
+                                <code>subscribeToYourCharacteristic(_:callOnNotify:completion:)</code><br /><br />
+                                <code>unsubscribeFromYourCharacteristic(_:completion:)</code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </figure>
+        </div>
+        
+        <h2 id="Using_Profile_Handlers">Using Profile Handlers</h2>
+        <div class="text">
+            Core Bluetooth uses delegate patterns for the handling of the result of <i>GATT</i> operations.
+            Since blocks became a language feature in Swift, called closures, blukii Kit's result handling is completely based on these.
+            The main reason for this is that closures produce code that is much more human readable because it keeps the initializing code and the one, responsible for the result, together.
+            Another advantage of closures is that their memory management is now handled by the Swift compiler, while you can stil produce retain cycles using delegate patterns with the wrong <i>Automatic Reference Counting (ARC)</i> references.<br /><br />
+            The most important closure while using <code>BKProfileHandlers</code> is the <code>BKProfileOperationCompletion</code>, which is definded as seen in <a class="listing_ref" href="#listing_4.1">Listing 4.1</a>.
+            It basically is a closure you provide for the handling of a <i>GATT</i> operation.
+            When it gets called the related <code>CBCharacteristic</code> is passed in as well as an optional <code>NSError</code>, that indicates whether an error occured or not.
+            <div class="listing" id="listing_4.1">
+                <details open>
+                    <summary>
+                        <b>Listing 4.1</b>&nbsp;&nbsp;&nbsp;Definition of the BKProfileOperationCompletion closure
+                    </summary>
+                    <pre>
+typealias BKProfileOperationCompletion = (characteristic: CBCharacteristic, error: NSError?) -> ()</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Reading_Characteristics">Reading Characteristics</h3>
+        <div class="text">
+            For all characteristics of a <i>blukii profile</i> you will find a read-only variable in the appropriate <code>BKProfileHandler</code>, that returns the current value of the characteristic as an optional.
+            These variables are computed by getting the value of the characteristc of the underlying <code>CBPeripheral</code> and if needed interpreting and transforimg them.
+            If the value is not known in the <code>CBPeripheral</code> or if it cannot be interpreted the variable will return <code>nil</code>.
+            Since Apple built in a lot of chaching mechanisms into Core Bluetooth, these value might be available even if you did not update them before.
+            To be sure you are working with the latest value you should call the appropriate update method each time you access the value.
+            But if you do not expect the value to change, you can just access the variable and only call the update method when it returns <code>nil</code>.<br /><br />
+            <a class="listing_ref" href="#listing_4.2">Listing  4.2</a> shows how updating a characteristic of a <i>blukii profile</i> could look like.
+            <div class="listing" id="listing_4.2">
+                <details open>
+                    <summary>
+                        <b>Listing 4.2</b>&nbsp;&nbsp;&nbsp;Update of the battery level of a blukii device
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+
+// [...]
+
+if let batteryLevel = blukii.batteryService?.batteryLevel {
+    // Battery level already available
+} else {
+    // Battery level not yet available
+	blukii.batteryService?.updateBatteryLevel({ (characteristic: CBCharacteristic, error: NSError?) -> () in
+    if error == nil {
+        // battery level update succeeded
+        let batteryLevel = blukii.batteryService!.batteryLevel!
+	} else {
+        // Error occured during battery level update
+	}
+})}</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Changing_Characteristic_Values">Changing Characteristic Values</h3>
+        <div class="text">
+            When you change the value of a characteristic you can face three different situations.
+            The first one, shown in <a class="listing_ref" href="#listing_4.3">Listing  4.3</a>, is that there is a finite range of values, e.g. the accelerometer filter.
+            <div class="listing" id="listing_4.3">
+                <details open>
+                    <summary>
+                        <b>Listing 4.3</b>&nbsp;&nbsp;&nbsp;Changing of the accelerometer filter
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+
+// [...]
+
+blukii.accelerometer?.changeFilterTo(4711, completion: { (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Handle Result
+})</pre>
+                </details>
+            </div>
+            The second one is that there is a limited range of values, e.g. the magnetometer range.
+            This case is shown in <a class="listing_ref" href="#listing_4.4">Listing  4.4</a>.
+            <div class="listing" id="listing_4.4">
+                <details open>
+                    <summary>
+                        <b>Listing 4.4</b>&nbsp;&nbsp;&nbsp;Changing of the altimeter event state
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+
+// [...]
+
+blukii.altimeter?.changeEventStateTo(BKAltimeterEventState.Deactivated, completion: { (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Handle Result
+})</pre>
+                </details>
+            </div>
+            The last situation you can face is that the range of values is limited to such a small set that there is a method for each one, as shown in <a class="listing_ref" href="#listing_4.5">Listing  4.5</a>.
+            <div class="listing" id="listing_4.5">
+                <details open>
+                    <summary>
+                        <b>Listing 4.5</b>&nbsp;&nbsp;&nbsp;Changing of the temperature enabler
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+
+// [...]
+
+blukii.temperature?.enableProfile({ (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Handle Result
+})
+    
+blukii.temperature?.disableProfile({ (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Handle Result
+})</pre>
+                </details>
+            </div>
+        </div>
+        
+        <h3 id="Subscribing_to_a_Characteristc">Subscribing to a Characteristc</h3>
+        <div class="text">
+            While you need to provide only one <code>BKProfileOperationCompletion</code> for all other operations, you need to provide two when you subscribe to a characteristic.
+            One will be called when the subscription succeeded or failed and the other one will be called each time the characteristics value changed.
+            <a class="listing_ref" href="#listing_4.6">Listing  4.6</a> show an example.
+            <div class="listing" id="listing_4.6">
+                <details open>
+                    <summary>
+                        <b>Listing 4.6</b>&nbsp;&nbsp;&nbsp;Subscribing to the temperature enabler characteristic
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+
+//  [...]
+
+blukii.temperature?.subscribeToEnabler({ (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Called when subscription change completed
+}, callOnNotify: { (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Called when the characteristic's value changed
+})</pre>
+                </details>
+            </div>
+        </div>
+        <div class="note">
+            <aside>
+                <b>Attention:</b> Due to Core Bluetooth forwards both events, a completed <i>read</i> and a <i>notify</i>, using the same callback you can get into a situation where the result of a <i>notify</i> will be handeled using the <code>BKProfileOperationCompletion</code> for a <i>read</i>.
+                This happens when you are subscribed to a characteristics value and during a pending <i>read</i> this characteristics sends a <i>notify</i>.
+                The <i>notify</i> will then be handled by the <i>read</i> completion and the <i>read</i> result will be given to the <i>onNotify</i> <code>BKProfileOperationCompletion</code>.<br /><br />
+                Updating a characteristic while you are subscrubed to it is therefore not recommended.
+            </aside>
+        </div>
+        
+        <h3 id="Subscribing_to_a_Characteristc">Unsubscribing from a Characteristc</h3>
+        <div class="text">
+            Unsubscribing from a characteristic works similiar to the other operations, as shown in <a class="listing_ref" href="#listing_4.7">Listing  4.7</a>.
+            <div class="listing" id="listing_4.7">
+                <details open>
+                    <summary>
+                        <b>Listing 4.7</b>&nbsp;&nbsp;&nbsp;Unsubscribing from the temperature enabler characteristic
+                    </summary>
+                    <pre>
+var blukii: BKBlukiiDeviceContext
+                        
+//  [...]
+                        
+blukii.temperature?.unsubscribeFromEnabler({ (characteristic: CBCharacteristic, error: NSError?) -> () in
+    // Unsubscribing completed
+})</pre>
+                </details>
+            </div>
+        </div>
+    </body>
+</html>
