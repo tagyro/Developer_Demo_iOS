@@ -53,8 +53,11 @@ class TableViewController: UITableViewController, CBCentralManagerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell")!
         
-        cell.textLabel?.text = names[indexPath.row] as String
-        cell.detailTextLabel?.text = rssis[indexPath.row].stringValue
+        if names.count > 0 {
+            cell.textLabel?.text = names[indexPath.row] as String
+            cell.detailTextLabel?.text = rssis[indexPath.row].stringValue
+        }
+
         
         return cell
     }

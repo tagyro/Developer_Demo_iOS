@@ -36,7 +36,7 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"applicationDidEnterBackground:", name:UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(UIApplicationDelegate.applicationDidEnterBackground(_:)), name:UIApplicationDidEnterBackgroundNotification, object: nil)
         if blukii == nil {
             let alert = UIAlertView(title: "No Blukii Selected", message: "Please choose a Blukii.", delegate: nil, cancelButtonTitle: "OK")
             alert.show()
